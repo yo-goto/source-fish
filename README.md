@@ -15,7 +15,24 @@ Update
 fisher update yo-goto/tsc.fish
 ```
 
-## Usage
+## Usage 🔦
+
+If your current project directory structure is like this, `tsc` finds all fish files in `./comptions`, `functions` and `conf.d` directories, and then source them at once.
+
+```console
+.
+├── CHANGELOG.md
+├── LICENSE
+├── README.md
+├── completions
+│   ├── fin.fish
+│   └── ggl.fish
+├── conf.d
+│   └── ggl.fish
+└── functions
+    ├── fin.fish
+    └── ggl.fish
+```
 
 ```console
 $ tsc
