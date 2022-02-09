@@ -17,7 +17,7 @@ fisher update yo-goto/tsc.fish
 
 ## Usage 🔦
 
-If your current project directory structure is like this, `tsc` finds all fish files in `comptions`, `functions` and `conf.d` directories, and then source them at once.
+If your current directory structure is like this, `tsc` finds all fish files in `comptions`, `functions` and `conf.d` directories, and then source them at once. (This example is my [ggl.fish](https://github.com/yo-goto/ggl.fish) plugin)
 
 ```console
 .
