@@ -1,4 +1,4 @@
-function source-fish -d "Source fish files under the current project"
+function source-fish -d "Source fish files under the current directory"
     argparse \
         -x 'a,t' \
         'a/all' 't/test' -- $argv
