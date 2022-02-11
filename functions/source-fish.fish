@@ -1,10 +1,10 @@
-function source-fish -d "Changed Source fish files under the current directory"
+function source-fish -d "Source fish files under the current directory"
     argparse \
-        -x 'a,t' \
-        'a/all' 't/test' -- $argv
+        -x 'v,h,a,t' \
+        'v/version' 'h/help' 'a/all' 't/test' -- $argv
     or return
 
-    set --local version_tsc "0.0.4"
+    set --local version_source_fish "v0.0.5"
     # color shortcut
     set --local cc (set_color yellow)
     set --local cn (set_color normal)
@@ -15,7 +15,13 @@ function source-fish -d "Changed Source fish files under the current directory"
     # input arguments
     set --local directory $argv
 
-    if test -n "$directory"
+    if set -q _flag_version
+        echo "source-fish:" $version_source_fish
+        return
+    else if set -q _flag_help
+        __source-fish_help
+        return
+    else if test -n "$directory"
         ## if arguments specified, find fish files in the directories
         ### split last slash character
         set -l list_escaped (string replace --all -r "/\$" "" $directory)
@@ -110,5 +116,19 @@ function __source-fish_times
         builtin source $argv[$i]
         and echo $ca"-->complete:"$cc $argv[$i] $cn 
     end
+end
+
+
+function __source-fish_help
+    set_color yellow
+    echo "Usage:"
+    echo "      source-fish [OPTIONS]"
+    echo "      source-fish DIRECOTRIES..."
+    echo "Options"
+    echo "      -v, --version   Show version info"
+    echo "      -h, --help      Show help"
+    echo "      -a, --all       Source all fish files under the current directory"
+    echo "      -t, --test      Source all fish files in the \"test\" folder"
+    set_color normal
 end
 

@@ -1,2 +1,6 @@
+- 0.0.5
+    - added `v/version`& `h/help` options
+    - fixed version info
+    - fixed comletions
 - 0.0.4
     - fixed basic source bugs
