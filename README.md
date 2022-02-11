@@ -49,8 +49,10 @@ If your current directory structure is like this, `source-fish` finds all fish f
 $ source-fish
 Current: /Projects/ggl.fish
 Source fish files in this project? [Y/n]: y
--->complete: ./functions/fin.fish ./functions/ggl.fish
--->complete: ./completions/fin.fish ./completions/ggl.fish
+-->complete: ./functions/ggl.fish
+-->complete: ./functions/fin.fish
+-->complete: ./completions/ggl.fish
+-->complete: ./completions/fin.fish
 -->complete: ./conf.d/ggl.fish
 ```
 
@@ -63,7 +65,9 @@ found fish files:
 ./functions/fin.fish
 ./conf.d/ggl.fish
 Source these fish files? [Y/n]: y
--->complete: ./functions/ggl.fish ./functions/fin.fish ./conf.d/ggl.fish
+-->complete: ./functions/ggl.fish
+-->complete: ./functions/fin.fish
+-->complete: ./conf.d/ggl.fish
 ```
 
 ## Options ⚙️
