@@ -1,4 +1,4 @@
-# source-fish 🌪
+# source-fish 🍣🥢
 This is a simple fish plugin to source all fish files in `functions`, `completions`, and `conf.d` directories under the current directory. Use this plugin for testing your fish plugin. Changed previous repo name "tsc.fish" to "source-fish" to avoid conflict with TypeScript compiler command "tsc".
 
 ## Installation 🎣
