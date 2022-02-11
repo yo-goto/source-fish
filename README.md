@@ -1,5 +1,5 @@
 # source-fish 🌪
-This is a simple fish plugin to source all fish files in `functions`, `completions` and `conf.d` directories under the current directory. Use this plugin for testing your fish plugin. Changed privious repo name "tsc.fish" to "source-fish" in order to avoid conflict TypeScript compiler command "tsc".
+This is a simple fish plugin to source all fish files in `functions`, `completions`, and `conf.d` directories under the current directory. Use this plugin for testing your fish plugin. Changed previous repo name "tsc.fish" to "source-fish" to avoid conflict with TypeScript compiler command "tsc".
 
 ## Installation 🎣
 
@@ -41,6 +41,18 @@ Source fish files in this project? [Y/n]: y
 -->complete: ./functions/fin.fish ./functions/ggl.fish
 -->complete: ./completions/fin.fish ./completions/ggl.fish
 -->complete: ./conf.d/ggl.fish
+```
+
+You can also source all fish files inside the specific directories using arguments.
+
+```console
+$ source-fish functions/ conf.d/
+found fish files:
+./functions/ggl.fish
+./functions/fin.fish
+./conf.d/ggl.fish
+Source these fish files? [Y/n]: y
+-->complete: ./functions/ggl.fish ./functions/fin.fish ./conf.d/ggl.fish
 ```
 
 ## Options ⚙️
