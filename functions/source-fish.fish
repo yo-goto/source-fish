@@ -1,16 +1,16 @@
-function source-fish -d "Source fish files under the current directory"
+function source-fish -d "Changed Source fish files under the current directory"
     argparse \
         -x 'a,t' \
         'a/all' 't/test' -- $argv
     or return
 
-    set --local version_tsc "0.0.3"
+    set --local version_tsc "0.0.4"
     # color shortcut
     set --local cc (set_color yellow)
     set --local cn (set_color normal)
     set --local ca (set_color cyan)
     set --local test_flag
-    set --local max_find_depth "-3"
+    set --local max_find_depth "-3"   
 
     # input arguments
     set --local directory $argv
@@ -31,8 +31,7 @@ function source-fish -d "Source fish files under the current directory"
         read -l -P "Source these fish files? [Y/n]: " question
         switch "$question"
             case Y y yes
-                builtin source $list_specied_dir_files
-                and echo $ca"-->complete:"$cc $list_specied_dir_files $cn
+                __source-fish_times $list_specied_dir_files
             case '*'    
                 return 1
         end
@@ -51,8 +50,7 @@ function source-fish -d "Source fish files under the current directory"
                 read -l -P 'Source all these fish files? [Y/n]: ' second
                 switch "$second"
                     case Y y yes
-                        builtin source $list_all_fish_files
-                        and echo $ca"-->complete:"$cc $list_all_fish_files $cn
+                        __source-fish_times $list_all_fish_files
                     case '*'    
                         return 1
                 end
@@ -71,8 +69,7 @@ function source-fish -d "Source fish files under the current directory"
         read -l -P "Source test fish files in this project? [Y/n]: " question
         switch "$question"
             case Y y yes
-                builtin source $list_test_dir
-                and echo $ca"-->complete:"$cc $list_test_dir $cn
+                __source-fish_times $list_test_dir
             case '*'    
                 return 1
         end        
@@ -81,17 +78,18 @@ function source-fish -d "Source fish files under the current directory"
         read -l -P "Source fish files in this project? [Y/n]: " question
         switch "$question"
             case Y y yes
-                test -d ./functions
-                    and builtin source ./functions/*.fish
-                    and echo $ca"-->complete:"$cc ./functions/*.fish $cn
+                set --local list_functions (command find . -type f -depth $max_find_depth -path "./functions*/*" -name "*.fish")
+                set --local list_completions (command find . -type f -depth $max_find_depth -path "./completions*/*" -name "*.fish")
+                set --local list_conf (command find . -type f -depth $max_find_depth -path "./conf.d*/*" -name "*.fish")
+                
+                test -n "$list_functions"
+                    and __source-fish_times $list_functions
                     and set test_flag "OK"
-                test -d ./completions
-                    and builtin source ./completions/*.fish
-                    and echo $ca"-->complete:"$cc ./completions/*.fish $cn
+                test -n "$list_completions"
+                    and __source-fish_times $list_completions
                     and set test_flag "OK"
-                test -d ./conf.d
-                    and builtin source ./conf.d/*.fish
-                    and echo $ca"-->complete:"$cc ./conf.d/*.fish $cn
+                test -n "$list_conf"
+                    and __source-fish_times $list_conf
                     and set test_flag "OK"
                 not test "$test_flag" = "OK"
                     and echo "can't find fish files"
@@ -101,3 +99,16 @@ function source-fish -d "Source fish files under the current directory"
         end
     end
 end
+
+
+# helper function
+function __source-fish_times
+    set --local cc (set_color yellow)
+    set --local cn (set_color normal)
+    set --local ca (set_color cyan)
+    for i in (seq 1 (count $argv))
+        builtin source $argv[$i]
+        and echo $ca"-->complete:"$cc $argv[$i] $cn 
+    end
+end
+

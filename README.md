@@ -59,3 +59,8 @@ Source these fish files? [Y/n]: y
 
 - `-t`, `--test` : find `test` directory, and source fish files inside it
 - `-a`, `--all` : find all fish files in the current directory and the subdirectories
+
+## Change Log 🔖
+
+- [CHANGELOG.md](/CHANGELOG.md)
+
