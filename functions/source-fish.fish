@@ -1,10 +1,10 @@
 function source-fish -d "Source fish files under the current directory"
     argparse \
-        -x 'v,h,a,t' \
-        'v/version' 'h/help' 'a/all' 't/test' -- $argv
+        -x 'v,h,a,t,c' \
+        'v/version' 'h/help' 'a/all' 't/test' 'c/config' -- $argv
     or return
 
-    set --local version_source_fish "v0.0.6"
+    set --local version_source_fish "v0.1.0"
     # color shortcut
     set --local cc (set_color yellow)
     set --local cn (set_color normal)
@@ -24,8 +24,8 @@ function source-fish -d "Source fish files under the current directory"
     else if test -n "$directory"
         ## if arguments specified, find fish files in the directories
         ### split last slash character
-        set -l list_escaped (string replace --all -r "/\$" "" $directory)
-        set -l list_specied_dir_files
+        set --local list_escaped (string replace --all -r "/\$" "" $directory)
+        set --local list_specied_dir_files
         for i in (seq 1 (count $list_escaped))
             set -a list_specied_dir_files (command find . -depth $max_find_depth -type f -path "./$list_escaped[$i]/*.fish")
         end
@@ -40,7 +40,7 @@ function source-fish -d "Source fish files under the current directory"
                 case Y y yes
                     __source-fish_times $list_specied_dir_files
                     return
-                case N n no
+                case N n q no
                     return 1
             end
         end
@@ -64,18 +64,18 @@ function source-fish -d "Source fish files under the current directory"
                             case Y y yes
                                 __source-fish_times $list_all_fish_files
                                 return
-                            case N n no
+                            case N n q no
                                 return 1
                         end
                     end
-                case N n no
+                case N n q no
                     return 1
             end
         end
     else if set -q _flag_test
         ## find "test" directory, and source fish files in the directory
         echo "Current:"$cc $PWD $cn
-        set -l list_test_dir (command find . -type f -depth $max_find_depth -path "./test/*.fish")
+        set --local list_test_dir (command find . -type f -depth $max_find_depth -path "./test/*.fish")
         if not test -n "$list_test_dir"
             echo "can't find any fish files"
             return 1
@@ -87,9 +87,53 @@ function source-fish -d "Source fish files under the current directory"
                 case Y y yes
                     __source-fish_times $list_test_dir
                     return
-                case N n no
+                case N n q no
                     return 1
             end
+        end
+    else if set -q _flag_config
+        while true
+            set --local list_config_files
+            while true 
+                read -l -P "Config [a/all | t/top | c/conf | f/functons | p/completions | e/exit]: " choice
+                switch "$choice"
+                    case A a all
+                        set list_config_files (command find "$__fish_config_dir" -type f -depth "-3" -name "*.fish")
+                        break
+                    case T t top
+                        set list_config_files (command find "$__fish_config_dir" -type f -depth "1" -name "*.fish")
+                        break
+                    case C c conf
+                        set list_config_files (command find "$__fish_config_dir/conf.d" -type f -depth "1" -name "*.fish")
+                        break
+                    case F f functions
+                        set list_config_files (command find "$__fish_config_dir/functions" -type f -depth "1" -name "*.fish")
+                        break
+                    case P p completions
+                        set list_config_files (command find "$__fish_config_dir/completions" -type f -depth "1" -name "*.fish")
+                        break
+                    case E e q exit
+                        return 1
+                end
+            end
+
+            while true
+                read -l -P "Source? [s/source | l/ls&source | t/test | b/back | e/exit ]: " question
+                switch "$question"
+                    case S s source
+                        __source-fish_times --quiet $list_config_files
+                        return
+                    case L l ls
+                        __source-fish_times $list_config_files
+                        return
+                    case T t test
+                        __source-fish_times --test $list_config_files
+                    case B b back
+                        break
+                    case E e q exit
+                        return 1
+                end
+            end        
         end
     else 
         echo "Current:"$cc $PWD $cn
@@ -113,9 +157,8 @@ function source-fish -d "Source fish files under the current directory"
                     not test "$test_flag" = "OK"
                         and echo "can't find fish files"
                         and return 1
-                    
                     return
-                case N n no
+                case N q n no
                     return 1
             end
         end
@@ -125,12 +168,26 @@ end
 
 # helper function
 function __source-fish_times
+    argparse 'quiet' 'test' -- $argv
+    or return 1
+
     set --local cc (set_color yellow)
     set --local cn (set_color normal)
     set --local ca (set_color cyan)
-    for i in (seq 1 (count $argv))
-        builtin source $argv[$i]
-        and echo $ca"-->complete:"$cc $argv[$i] $cn 
+
+    if set -q _flag_quiet
+        for i in (seq 1 (count $argv))
+            builtin source $argv[$i]
+        end
+    else if set -q _flag_test
+        for i in (seq 1 (count $argv))
+            echo $ca"-->found:"$cc $argv[$i] $cn 
+        end
+    else 
+        for i in (seq 1 (count $argv))
+            builtin source $argv[$i]
+            and echo $ca"-->complete:"$cc $argv[$i] $cn 
+        end
     end
 end
 
@@ -145,6 +202,7 @@ function __source-fish_help
     echo "      -h, --help      Show help"
     echo "      -a, --all       Source all fish files under the current directory"
     echo "      -t, --test      Source all fish files in the \"test\" folder"
+    echo "      -c, --config    Source fish files in the config directory"
     set_color normal
 end
 
