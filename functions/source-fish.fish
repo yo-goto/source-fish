@@ -4,7 +4,7 @@ function source-fish -d "Source fish files under the current directory"
         'v/version' 'h/help' 'a/all' 't/test' 'c/config' -- $argv
     or return
 
-    set --local version_source_fish "v0.1.0"
+    set --local version_source_fish "v0.1.1"
     # color shortcut
     set --local cc (set_color yellow)
     set --local cn (set_color normal)
@@ -75,7 +75,9 @@ function source-fish -d "Source fish files under the current directory"
     else if set -q _flag_test
         ## find "test" directory, and source fish files in the directory
         echo "Current:"$cc $PWD $cn
-        set --local list_test_dir (command find . -type f -depth $max_find_depth -path "./test/*.fish")
+        set --local list_test_dir
+        set -a list_test_dir (command find . -type f -depth $max_find_depth -path "./test/*.fish")
+        set -a list_test_dir (command find . -type f -depth $max_find_depth -path "./tests/*.fish")
         if not test -n "$list_test_dir"
             echo "can't find any fish files"
             return 1
@@ -135,7 +137,8 @@ function source-fish -d "Source fish files under the current directory"
                 end
             end        
         end
-    else 
+    else
+        ## no option flags & no arguments
         echo "Current:"$cc $PWD $cn
         while true
             read -l -P "Source fish files in this project? [Y/n]: " question

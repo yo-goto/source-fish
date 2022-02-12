@@ -1,3 +1,5 @@
+- 0.1.1
+    - modified test option (now, test option tries to find "./test/" and "./tests/" folders)
 - 0.1.0
     - added question loops
     - made find command conditions simple
