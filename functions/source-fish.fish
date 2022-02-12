@@ -4,7 +4,7 @@ function source-fish -d "Source fish files under the current directory"
         'v/version' 'h/help' 'a/all' 't/test' 'c/config' -- $argv
     or return
 
-    set --local version_source_fish "v0.1.2"
+    set --local version_source_fish "v0.1.3"
     # color shortcut
     set --local cc (set_color yellow)
     set --local cn (set_color normal)
@@ -97,8 +97,11 @@ function source-fish -d "Source fish files under the current directory"
         while true
             set --local list_config_files
             while true 
-                read -l -P "Config [a/all | t/top | c/conf | f/functons | p/completions | e/exit]: " choice
+                read -l -P "Config [r/recent | a/all | t/top | c/conf | f/functons | p/completions | e/exit]: " choice
                 switch "$choice"
+                    case R r recent
+                        set list_config_files (command find "$__fish_config_dir" -type f -depth "-3" -name "*.fish" -mtime "-1")
+                        break
                     case A a all
                         set list_config_files (command find "$__fish_config_dir" -type f -depth "-3" -name "*.fish")
                         break
