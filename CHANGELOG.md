@@ -1,3 +1,5 @@
+- 0.1.4
+    - added new option flags `-r` and `--recent` to find recently modified fish files under the current directory
 - 0.1.3
     - fixed help message
     - config option: added r/recent option to source recently changed files

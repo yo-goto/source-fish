@@ -26,6 +26,7 @@ Usage:
 Options:
       -v, --version   Show version info
       -h, --help      Show help
+      -r, --recent    Find recently modified files & source them
       -a, --all       Source all fish files under the current directory
       -t, --test      Source all fish files in the "test" folder
       -c, --config    Source fish files in the config directory
