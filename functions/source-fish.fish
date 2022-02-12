@@ -200,7 +200,7 @@ function __source-fish_help
     echo "Usage:"
     echo "      source-fish [OPTION]"
     echo "      source-fish DIRECOTRIES..."
-    echo "Options"
+    echo "Options:"
     echo "      -v, --version   Show version info"
     echo "      -h, --help      Show help"
     echo "      -a, --all       Source all fish files under the current directory"
