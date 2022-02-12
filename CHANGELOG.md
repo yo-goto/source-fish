@@ -1,3 +1,6 @@
+- 0.1.3
+    - fixed help message
+    - config option: added r/recent option to source recently changed files
 - 0.1.2
     - cleaned code
 - 0.1.1

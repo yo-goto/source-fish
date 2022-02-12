@@ -23,7 +23,7 @@ fisher update yo-goto/source-fish
 Usage:
       source-fish [OPTION]
       source-fish DIRECOTRIES...
-Options
+Options:
       -v, --version   Show version info
       -h, --help      Show help
       -a, --all       Source all fish files under the current directory
@@ -49,20 +49,20 @@ If your current directory structure is like this, `source-fish` finds all fish f
 ```
 
 ```console
-$ source-fish
-Current: /Projects/ggl.fish
+❯ source-fish
+Current: /Users/userName/Documents/ALL-Repo/ggl.fish
 Source fish files in this project? [Y/n]: y
--->complete: ./functions/ggl.fish
--->complete: ./functions/fin.fish
--->complete: ./completions/ggl.fish
--->complete: ./completions/fin.fish
--->complete: ./conf.d/ggl.fish
+-->completed: ./functions/ggl.fish
+-->completed: ./functions/fin.fish
+-->completed: ./completions/ggl.fish
+-->completed: ./completions/fin.fish
+-->completed: ./conf.d/ggl.fish
 ```
 
 You can also source all fish files inside the specific directories under the current directory using arguments. After `source-fish `, use the Tab key to show auto-suggestions.
 
 ```console
-$ source-fish functions/ conf.d/
+❯ source-fish functions/ conf.d/
 found fish files:
 ./functions/ggl.fish
 ./functions/fin.fish
@@ -76,23 +76,31 @@ Source these fish files? [Y/n]: y
 You can also source bulk fish files in the config direcotry (to check your config dir, use `echo $__fish_config_dir`). To do so, use `-c` or `--config` option flag. In this option mode, you can interactively select a directory to source.
 
 ```console
-$ source-fish --config
-Config [a/all | t/top | c/conf | f/functons | p/completions | e/exit]: p
+❯ source-fish --config
+Config [r/recent | a/all | t/top | c/conf | f/functons | p/completions | e/exit]: r
 Source? [s/source | l/ls&source | t/test | b/back | e/exit ]: t
 -->found: /Users/userName/.config/fish/completions/ggl.fish
--->found: /Users/userName/.config/fish/completions/tide.fish
--->found: /Users/userName/.config/fish/completions/fish_logo.fish
 -->found: /Users/userName/.config/fish/completions/source-fish.fish
+-->found: /Users/userName/.config/fish/completions/fishtape.fish
 -->found: /Users/userName/.config/fish/completions/fin.fish
--->found: /Users/userName/.config/fish/completions/to.fish
+-->found: /Users/userName/.config/fish/functions/ggl.fish
+-->found: /Users/userName/.config/fish/functions/source-fish.fish
+-->found: /Users/userName/.config/fish/functions/fishtape.fish
+-->found: /Users/userName/.config/fish/functions/fin.fish
+-->found: /Users/userName/.config/fish/conf.d/ggl.fish
 Source? [s/source | l/ls&source | t/test | b/back | e/exit ]: l
--->complete: /Users/userName/.config/fish/completions/ggl.fish
--->complete: /Users/userName/.config/fish/completions/tide.fish
--->complete: /Users/userName/.config/fish/completions/fish_logo.fish
--->complete: /Users/userName/.config/fish/completions/source-fish.fish
--->complete: /Users/userName/.config/fish/completions/fin.fish
--->complete: /Users/userName/.config/fish/completions/to.fish
+-->completed: /Users/userName/.config/fish/completions/ggl.fish
+-->completed: /Users/userName/.config/fish/completions/source-fish.fish
+-->completed: /Users/userName/.config/fish/completions/fishtape.fish
+-->completed: /Users/userName/.config/fish/completions/fin.fish
+-->completed: /Users/userName/.config/fish/functions/ggl.fish
+-->completed: /Users/userName/.config/fish/functions/source-fish.fish
+-->completed: /Users/userName/.config/fish/functions/fishtape.fish
+-->completed: /Users/userName/.config/fish/functions/fin.fish
+-->completed: /Users/userName/.config/fish/conf.d/ggl.fish
 ```
+
+In the first question, you can select options to source directories. `r/recent` finds reacently modified files (within 1 day). `a/all` finds all fish files in the config directory.
 
 In the second question, you can check the selected fish files with `t` or `test` without sourcing. To source files and check the results at the same time, type `l` or `ls`. To go back to select config, type `b` or `back`. Typing `s` or `source` results in sourcing fish files in the selected directory without printing results.
 
