@@ -1,7 +1,7 @@
 function source-fish -d "Source fish files under the current directory"
     argparse \
-        -x 'v,h,a,t,c' \
-        'v/version' 'h/help' 'a/all' 't/test' 'c/config' -- $argv
+        -x 'v,h,r,a,t,c' \
+        'v/version' 'h/help' 'r/recent' 'a/all' 't/test' 'c/config' -- $argv
     or return
 
     set --local version_source_fish "v0.1.3"
@@ -38,6 +38,25 @@ function source-fish -d "Source fish files under the current directory"
             switch "$question"
                 case Y y yes
                     __source-fish_times $list_specified_dir_files
+                    return
+                case N n q no
+                    return 1
+            end
+        end
+    else if set -q _flag_recent
+        echo "Current:"$cc $PWD $cn
+        set --local list_recent
+        set -a list_recent (command find . -type f -depth $max_find_depth -path "*.fish" -mmin "-60")
+        if not test -n "$list_recent"
+            echo "can't find any fish files"
+            return 1
+        end
+        printf '%s\n' "found fish files modified in last hour:"$cc "  "$list_recent; set_color normal
+        while true
+            read -l -P "Source these fish files? [Y/n]: " question
+            switch "$question"
+                case Y y yes
+                    __source-fish_times $list_recent
                     return
                 case N n q no
                     return 1
@@ -206,6 +225,7 @@ function __source-fish_help
     echo "Options:"
     echo "      -v, --version   Show version info"
     echo "      -h, --help      Show help"
+    echo "      -r, --recent    Find recently modified files & source them"
     echo "      -a, --all       Source all fish files under the current directory"
     echo "      -t, --test      Source all fish files in the \"test\" folder"
     echo "      -c, --config    Source fish files in the config directory"
