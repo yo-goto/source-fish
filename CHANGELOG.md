@@ -1,6 +1,7 @@
-- 0.0.6
+- 0.1.0
     - added question loops
     - made find command conditions simple
+    - added `--config` option to source fish files in the config directory
 - 0.0.5
     - added `v/version`& `h/help` options
     - fixed version info
