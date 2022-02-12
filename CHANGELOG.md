@@ -1,3 +1,6 @@
+- 0.0.6
+    - added question loops
+    - made find command conditions simple
 - 0.0.5
     - added `v/version`& `h/help` options
     - fixed version info
