@@ -158,15 +158,15 @@ function source-fish -d "Source fish files under the current directory"
             end
 
             while true
-                read -l -P "Source? [s/source | l/ls&source | t/test | b/back | e/exit ]: " question
+                read -l -P "Source? [y/yes | r/result&source | p/print | b/back | e/exit ]: " question
                 switch "$question"
-                    case S s source
+                    case Y y yes
                         __source-fish_times --quiet $list_config_files
                         return
-                    case L l ls
+                    case R r result
                         __source-fish_times $list_config_files
                         return
-                    case T t test
+                    case P p print
                         __source-fish_times --test $list_config_files
                     case B b back
                         set --erase list_config_files
