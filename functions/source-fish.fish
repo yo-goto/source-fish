@@ -115,31 +115,48 @@ function source-fish -d "Source fish files under the current directory"
     else if set -q _flag_config
         while true
             set --local list_config_files
-            while true 
-                read -l -P "Config [r/recent | a/all | t/top | c/conf | f/functons | p/completions | e/exit]: " choice
+            while true
+                set --local loop_exit_flag "loop"
+                read -l -P "Config [r/recent | a/all | d/dir | e/exit]: " choice
                 switch "$choice"
                     case R r recent
-                        set list_config_files (command find "$__fish_config_dir" -type f -depth "-3" -name "*.fish" -mtime "-1")
+                        set list_config_files (command find "$__fish_config_dir" -type f -depth "-3" -name "*.fish" -mmin "-120")
                         break
                     case A a all
                         set list_config_files (command find "$__fish_config_dir" -type f -depth "-3" -name "*.fish")
                         break
-                    case T t top
-                        set list_config_files (command find "$__fish_config_dir" -type f -depth "1" -name "*.fish")
-                        break
-                    case C c conf
-                        set list_config_files (command find "$__fish_config_dir/conf.d" -type f -depth "1" -name "*.fish")
-                        break
-                    case F f functions
-                        set list_config_files (command find "$__fish_config_dir/functions" -type f -depth "1" -name "*.fish")
-                        break
-                    case P p completions
-                        set list_config_files (command find "$__fish_config_dir/completions" -type f -depth "1" -name "*.fish")
-                        break
+                    case D d dir
+                        while true
+                            read -l -P "Directory [t/top | c/conf | f/functons | p/completions | b/back | e/exit ]: " select_dir
+                            switch "$select_dir"
+                                case T t top
+                                    set list_config_files (command find "$__fish_config_dir" -type f -depth "1" -name "*.fish")
+                                    set loop_exit_flag "exit"
+                                    break
+                                case C c conf
+                                    set list_config_files (command find "$__fish_config_dir/conf.d" -type f -depth "1" -name "*.fish")
+                                    set loop_exit_flag "exit"
+                                    break
+                                case F f functions
+                                    set list_config_files (command find "$__fish_config_dir/functions" -type f -depth "1" -name "*.fish")
+                                    set loop_exit_flag "exit"
+                                    break
+                                case P p completions
+                                    set list_config_files (command find "$__fish_config_dir/completions" -type f -depth "1" -name "*.fish")
+                                    set loop_exit_flag "exit"
+                                    break
+                                case B b back
+                                    break
+                                case E e q exit
+                                    return 1
+                            end
+                        end
                     case E e q exit
                         return 1
                 end
+                test "$loop_exit_flag" = "exit" ; and break
             end
+
             while true
                 read -l -P "Source? [s/source | l/ls&source | t/test | b/back | e/exit ]: " question
                 switch "$question"
@@ -152,11 +169,12 @@ function source-fish -d "Source fish files under the current directory"
                     case T t test
                         __source-fish_times --test $list_config_files
                     case B b back
+                        set --erase list_config_files
                         break
                     case E e q exit
                         return 1
                 end
-            end        
+            end
         end
     else
         ## no option flags & no arguments
@@ -202,16 +220,16 @@ function __source-fish_times
 
     if set -q _flag_test
         for i in (seq 1 (count $argv))
-            echo $ca"-->found:"$cc $argv[$i] $cn 
+            echo $ca"-->found:"$cc $argv[$i] $cn
         end
     else if set -q _flag_quiet
         for i in (seq 1 (count $argv))
             builtin source $argv[$i]
         end
-    else 
+    else
         for i in (seq 1 (count $argv))
             builtin source $argv[$i]
-            and echo $ca"-->completed:"$cc $argv[$i] $cn 
+            and echo $ca"-->completed:"$cc $argv[$i] $cn
         end
     end
 end
@@ -231,4 +249,3 @@ function __source-fish_help
     echo "      -c, --config    Source fish files in the config directory"
     set_color normal
 end
-
