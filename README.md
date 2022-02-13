@@ -77,33 +77,30 @@ Source these fish files? [Y/n]: y
 You can also source bulk fish files in the config direcotry (to check your config dir, use `echo $__fish_config_dir`). To do so, use `-c` or `--config` option flag. In this option mode, you can interactively select a directory to source.
 
 ```console
-❯ source-fish --config
-Config [r/recent | a/all | t/top | c/conf | f/functons | p/completions | e/exit]: r
-Source? [s/source | l/ls&source | t/test | b/back | e/exit ]: t
--->found: /Users/userName/.config/fish/completions/ggl.fish
--->found: /Users/userName/.config/fish/completions/source-fish.fish
--->found: /Users/userName/.config/fish/completions/fishtape.fish
--->found: /Users/userName/.config/fish/completions/fin.fish
--->found: /Users/userName/.config/fish/functions/ggl.fish
--->found: /Users/userName/.config/fish/functions/source-fish.fish
--->found: /Users/userName/.config/fish/functions/fishtape.fish
--->found: /Users/userName/.config/fish/functions/fin.fish
--->found: /Users/userName/.config/fish/conf.d/ggl.fish
-Source? [s/source | l/ls&source | t/test | b/back | e/exit ]: l
--->completed: /Users/userName/.config/fish/completions/ggl.fish
--->completed: /Users/userName/.config/fish/completions/source-fish.fish
--->completed: /Users/userName/.config/fish/completions/fishtape.fish
--->completed: /Users/userName/.config/fish/completions/fin.fish
--->completed: /Users/userName/.config/fish/functions/ggl.fish
--->completed: /Users/userName/.config/fish/functions/source-fish.fish
--->completed: /Users/userName/.config/fish/functions/fishtape.fish
--->completed: /Users/userName/.config/fish/functions/fin.fish
--->completed: /Users/userName/.config/fish/conf.d/ggl.fish
+❯ source-fish -c
+Config [r/recent | a/all | d/dir | e/exit]: d
+Directory [t/top | c/conf | f/functons | p/completions | b/back | e/exit ]: p
+Source? [y/yes | r/result&source | p/print | b/back | e/exit ]: p
+-->found: /Users/roshi/.config/fish/completions/ggl.fish
+-->found: /Users/roshi/.config/fish/completions/tide.fish
+-->found: /Users/roshi/.config/fish/completions/fish_logo.fish
+-->found: /Users/roshi/.config/fish/completions/source-fish.fish
+-->found: /Users/roshi/.config/fish/completions/fishtape.fish
+-->found: /Users/roshi/.config/fish/completions/fin.fish
+-->found: /Users/roshi/.config/fish/completions/to.fish
+Source? [y/yes | r/result&source | p/print | b/back | e/exit ]: r
+-->completed: /Users/roshi/.config/fish/completions/ggl.fish
+-->completed: /Users/roshi/.config/fish/completions/tide.fish
+-->completed: /Users/roshi/.config/fish/completions/fish_logo.fish
+-->completed: /Users/roshi/.config/fish/completions/source-fish.fish
+-->completed: /Users/roshi/.config/fish/completions/fishtape.fish
+-->completed: /Users/roshi/.config/fish/completions/fin.fish
+-->completed: /Users/roshi/.config/fish/completions/to.fish
 ```
 
 In the first question, you can select options to source directories. `r/recent` finds reacently modified files (within 1 day). `a/all` finds all fish files in the config directory.
 
-In the second question, you can check the selected fish files with `t` or `test` without sourcing. To source files and check the results at the same time, type `l` or `ls`. To go back to select config, type `b` or `back`. Typing `s` or `source` results in sourcing fish files in the selected directory without printing results.
+In the second question, you can check the selected fish files with `p` or `print` without sourcing. To source files and check the results at the same time, type `r` or `result`. To go back to select config, type `b` or `back`. Typing `s` or `source` results in sourcing fish files in the selected directory without printing results.
 
 ## Change Log 🔖
 

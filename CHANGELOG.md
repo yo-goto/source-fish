@@ -1,3 +1,8 @@
+- 0.1.5
+    - changed selection items in the second loop to be more understandable
+    - changed failed msg to No files found
+    - fixed __source-fish_times bug with no argument
+    - added another loop to config option mode for usability
 - 0.1.4
     - added new option flags `-r` and `--recent` to find recently modified fish files under the current directory
 - 0.1.3
