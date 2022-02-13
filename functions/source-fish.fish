@@ -29,7 +29,7 @@ function source-fish -d "Source fish files under the current directory"
             set -a list_specified_dir_files (command find . -depth $max_find_depth -type f -path "./$list_replaced[$i]/*.fish")
         end
         if not test -n "$list_specified_dir_files"
-            echo "can't find any fish files"
+            echo "No files found"
             return 1
         end
         printf '%s\n' "found fish files:"$cc $list_specified_dir_files; set_color normal
@@ -48,7 +48,7 @@ function source-fish -d "Source fish files under the current directory"
         set --local list_recent
         set -a list_recent (command find . -type f -depth $max_find_depth -path "*.fish" -mmin "-60")
         if not test -n "$list_recent"
-            echo "can't find any fish files"
+            echo "No files found"
             return 1
         end
         printf '%s\n' "found fish files modified in last hour:"$cc "  "$list_recent; set_color normal
@@ -72,7 +72,7 @@ function source-fish -d "Source fish files under the current directory"
                 case Y y yes
                     set -l list_all_fish_files (command find . -depth $max_find_depth -type f -name "*.fish")
                     if not test -n "$list_all_fish_files"
-                        echo "can't find any fish files"
+                        echo "No files found"
                         return 1
                     end
                     printf '%s\n' "found fish files:"$cc "  "$list_all_fish_files; set_color normal
@@ -98,7 +98,7 @@ function source-fish -d "Source fish files under the current directory"
         set -a list_test_dir (command find . -type f -depth $max_find_depth -path "./tests/*.fish")
         # set -a list_test_dir (command find . -type f -depth $max_find_depth -name "*test.fish")
         if not test -n "$list_test_dir"
-            echo "can't find any fish files"
+            echo "No files found"
             return 1
         end
         printf '%s\n' "found test files:"$cc "  "$list_test_dir; set_color normal
@@ -197,7 +197,7 @@ function source-fish -d "Source fish files under the current directory"
                         and __source-fish_times $list_conf
                         and set test_flag "OK"
                     not test "$test_flag" = "OK"
-                        and echo "can't find fish files"
+                        and echo "No files found"
                         and return 1
                     return
                 case N q n no
@@ -235,7 +235,7 @@ function __source-fish_times
             end
         end
     else
-        echo "No files found"
+        echo $ca"No files found" $cn
     end
 end
 
