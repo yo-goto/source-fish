@@ -4,7 +4,7 @@ function source-fish -d "Source fish files under the current directory"
         'v/version' 'h/help' 'r/recent' 'a/all' 't/test' 'c/config' -- $argv
     or return
 
-    set --local version_source_fish "v0.1.3"
+    set --local version_source_fish "v0.1.5"
     # color shortcut
     set --local cc (set_color yellow)
     set --local cn (set_color normal)
