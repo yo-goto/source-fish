@@ -218,19 +218,24 @@ function __source-fish_times
     set --local cn (set_color normal)
     set --local ca (set_color cyan)
 
-    if set -q _flag_test
-        for i in (seq 1 (count $argv))
-            echo $ca"-->found:"$cc $argv[$i] $cn
-        end
-    else if set -q _flag_quiet
-        for i in (seq 1 (count $argv))
-            builtin source $argv[$i]
+    set --local argcount (count $argv)
+    if test $argcount -ge 1
+        if set -q _flag_test
+            for i in (seq 1 $argcount)
+                echo $ca"-->found:"$cc $argv[$i] $cn
+            end
+        else if set -q _flag_quiet
+            for i in (seq 1 $argcount)
+                builtin source $argv[$i]
+            end
+        else
+            for i in (seq 1 $argcount)
+                builtin source $argv[$i]
+                and echo $ca"-->completed:"$cc $argv[$i] $cn
+            end
         end
     else
-        for i in (seq 1 (count $argv))
-            builtin source $argv[$i]
-            and echo $ca"-->completed:"$cc $argv[$i] $cn
-        end
+        echo "No files found"
     end
 end
 
