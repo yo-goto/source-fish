@@ -119,7 +119,7 @@ function source-fish -d "Source fish files under the current directory"
                 read -l -P "Config [r/recent | a/all | d/dir | e/exit]: " choice
                 switch "$choice"
                     case R r recent
-                        set list_config_files (command find "$__fish_config_dir" -type f -depth "-3" -name "*.fish" -mmin "-120")
+                        set list_config_files (command find "$__fish_config_dir" -type f -depth "-3" -name "*.fish" -mmin "-60")
                         break
                     case A a all
                         set list_config_files (command find "$__fish_config_dir" -type f -depth "-3" -name "*.fish")
@@ -248,7 +248,7 @@ function __source-fish_help
     echo "Options:"
     echo "      -v, --version   Show version info"
     echo "      -h, --help      Show help"
-    echo "      -r, --recent    Find recently modified files & source them"
+    echo "      -r, --recent    Find recently modified files (within 1 hour) & source them"
     echo "      -a, --all       Source all fish files under the current directory"
     echo "      -t, --test      Source all fish files in the \"test\" folder"
     echo "      -c, --config    Source fish files in the config directory"
