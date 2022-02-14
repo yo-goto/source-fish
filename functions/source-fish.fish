@@ -4,7 +4,7 @@ function source-fish -d "Source fish files under the current directory"
         'v/version' 'h/help' 'r/recent' 'a/all' 't/test' 'c/config' -- $argv
     or return
 
-    set --local version_source_fish "v0.1.5"
+    set --local version_source_fish "v0.1.6"
     # color shortcut
     set --local cc (set_color yellow)
     set --local cn (set_color normal)
@@ -39,7 +39,7 @@ function source-fish -d "Source fish files under the current directory"
                     __source-fish_times $list_specified_dir_files
                     return
                 case N n q no
-                    return 1
+                    return
             end
         end
     else if set -q _flag_recent
@@ -58,7 +58,7 @@ function source-fish -d "Source fish files under the current directory"
                     __source-fish_times $list_recent
                     return
                 case N n q no
-                    return 1
+                    return
             end
         end
     else if set -q _flag_all
@@ -82,11 +82,11 @@ function source-fish -d "Source fish files under the current directory"
                                 __source-fish_times $list_all_fish_files
                                 return
                             case N n q no
-                                return 1
+                                return
                         end
                     end
                 case N n q no
-                    return 1
+                    return
             end
         end
     else if set -q _flag_test
@@ -108,7 +108,7 @@ function source-fish -d "Source fish files under the current directory"
                     __source-fish_times $list_test_dir
                     return
                 case N n q no
-                    return 1
+                    return
             end
         end
     else if set -q _flag_config
@@ -147,11 +147,11 @@ function source-fish -d "Source fish files under the current directory"
                                 case B b back
                                     break
                                 case E e q exit
-                                    return 1
+                                    return
                             end
                         end
                     case E e q exit
-                        return 1
+                        return
                 end
                 test "$loop_exit_flag" = "exit" ; and break
             end
@@ -171,7 +171,7 @@ function source-fish -d "Source fish files under the current directory"
                         set --erase list_config_files
                         break
                     case E e q exit
-                        return 1
+                        return
                 end
             end
         end
@@ -201,7 +201,7 @@ function source-fish -d "Source fish files under the current directory"
                         and return 1
                     return
                 case N q n no
-                    return 1
+                    return
             end
         end
     end
