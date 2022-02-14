@@ -1,3 +1,12 @@
+- 0.1.6
+    - New feature
+        - added new selection item to open config dir with vscode or filer in config option mode
+    - Improvement
+        - changed the time range for recently modified files to 60 min
+        - modified interactive question message
+    - Refactor
+        - modified exit statuses
+        - split the main func and made a helper for the config option
 - 0.1.5
     - changed selection items in the second loop to be more understandable
     - changed failed msg to No files found
