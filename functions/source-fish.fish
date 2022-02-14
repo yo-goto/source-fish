@@ -12,7 +12,6 @@ function source-fish -d "Source fish files under the current directory"
 
     set --local directory $argv # input arguments
     set --local max_find_depth "-3" # find depth
-    set --local test_flag
 
     if set -q _flag_version
         echo "source-fish:" $version_source_fish
@@ -178,6 +177,7 @@ function source-fish -d "Source fish files under the current directory"
         end
     else
         ## no option flags & no arguments
+        set --local test_flag
         echo "Current:"$cc $PWD $cn
         while true
             read -l -P "Source fish files in this project? [Y/n]: " question
