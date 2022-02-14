@@ -152,7 +152,7 @@ function __source-fish_config
         set --local list_config_files
         while true
             set --local loop_exit_flag "loop"
-            read -l -P "Config [r/recent | a/all | d/dir | e/exit]: " choice
+            read -l -P "Config [r/recent | a/all | d/dir | o/open | e/exit]: " choice
             switch "$choice"
                 case R r recent
                     set list_config_files (command find "$__fish_config_dir" -type f -depth "-3" -name "*.fish" -mmin "-60")
@@ -160,6 +160,27 @@ function __source-fish_config
                 case A a all
                     set list_config_files (command find "$__fish_config_dir" -type f -depth "-3" -name "*.fish")
                     break
+                case O o open
+                    set --local filer_flag "false"
+                    if type -q code
+                        read -l -P "Open direcotry in VsCode or Finder? [v/vscode | f/filer]: " input
+                        switch "$input"
+                            case V v vscode
+                                command code $__fish_config_dir
+                            case F f finder
+                                set filer_flag "true"
+                        end
+                    end
+
+                    if test "$filer_flag" = "true"
+                        if command -q open
+                            command open $__fish_config_dir
+                        else if type -q xdg-open
+                            xdg-open $__fish_config_dir
+                        else
+                            echo "can't find open or xdg-open command"
+                        end
+                    end
                 case D d dir
                     while true
                         read -l -P "Directory [t/top | c/conf | f/functons | p/completions | b/back | e/exit ]: " select_dir
