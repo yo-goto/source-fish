@@ -152,7 +152,7 @@ function __source-fish_config
         set --local list_config_files
         while true
             set --local loop_exit_flag "loop"
-            read -l -P "Config [r/recent | a/all | d/dir | o/open | e/exit]: " choice
+            read -l -P "Config [r:recent | a:all | d:dir | o:open | e:exit]: " choice
             switch "$choice"
                 case R r recent
                     set list_config_files (command find "$__fish_config_dir" -type f -depth "-3" -name "*.fish" -mmin "-60")
@@ -163,7 +163,7 @@ function __source-fish_config
                 case O o open
                     set --local filer_flag "false"
                     if type -q code
-                        read -l -P "Open direcotry in VsCode or Finder? [v/vscode | f/filer]: " input
+                        read -l -P "Open direcotry in VsCode or Finder? [v:vscode | f:filer]: " input
                         switch "$input"
                             case V v vscode
                                 command code $__fish_config_dir
@@ -183,7 +183,7 @@ function __source-fish_config
                     end
                 case D d dir
                     while true
-                        read -l -P "Directory [t/top | c/conf | f/functons | p/completions | b/back | e/exit ]: " select_dir
+                        read -l -P "Directory [t:top | c:conf | f:functons | p:completions | b:back | e:exit ]: " select_dir
                         switch "$select_dir"
                             case T t top
                                 set list_config_files (command find "$__fish_config_dir" -type f -depth "1" -name "*.fish")
@@ -214,7 +214,7 @@ function __source-fish_config
         end
 
         while true
-            read -l -P "Source? [y/yes | r/result&source | p/print | b/back | e/exit ]: " question
+            read -l -P "Source? [y:yes | r:result&source | p:print | b:back | e:exit ]: " question
             switch "$question"
                 case Y y yes
                     __source-fish_times --quiet $list_config_files
