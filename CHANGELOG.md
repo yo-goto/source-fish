@@ -1,4 +1,14 @@
-- 0.1.6
+- v0.2.0
+    - New feature
+        - added new option `p/permit` to source fish files in the current project without confirmation
+    - Improvement
+        - changed config option mode sequence, more user-friendly
+        - added source failed message
+        - modified all option process logics & made them consistent
+    - Refactor
+        - renamed the inner function option name 'test' to 'quiet'
+        - modified the help message
+- v0.1.6
     - New feature
         - added new selection item to open config dir with vscode or filer in config option mode
     - Improvement
@@ -7,27 +17,27 @@
     - Refactor
         - modified exit statuses
         - split the main func and made a helper for the config option
-- 0.1.5
+- v0.1.5
     - changed selection items in the second loop to be more understandable
     - changed failed msg to No files found
     - fixed __source-fish_times bug with no argument
     - added another loop to config option mode for usability
-- 0.1.4
+- v0.1.4
     - added new option flags `-r` and `--recent` to find recently modified fish files under the current directory
-- 0.1.3
+- v0.1.3
     - fixed help message
     - config option: added r/recent option to source recently changed files
-- 0.1.2
+- v0.1.2
     - cleaned code
-- 0.1.1
+- v0.1.1
     - modified test option (now, test option tries to find "./test/" and "./tests/" folders)
-- 0.1.0
+- v0.1.0
     - added question loops
     - made find command conditions simple
     - added `--config` option to source fish files in the config directory
-- 0.0.5
+- v0.0.5
     - added `v/version`& `h/help` options
     - fixed version info
     - fixed completions
-- 0.0.4
+- v0.0.4
     - fixed basic source bugs

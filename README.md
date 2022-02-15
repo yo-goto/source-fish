@@ -20,12 +20,13 @@ fisher update yo-goto/source-fish
 ## Usage 🔦
 
 ```console
-Usage:
+USAGE:
       source-fish [OPTION]
       source-fish DIRECOTRIES...
-Options:
+OPTIONS:
       -v, --version   Show version info
       -h, --help      Show help
+      -p, --permit    Source fish files without confirmation
       -r, --recent    Find recently modified files (within 1 hour) & source them
       -a, --all       Source all fish files under the current directory
       -t, --test      Source all fish files in the "test" folder
@@ -100,7 +101,7 @@ Source? [y/yes | r/result&source | p/print | b/back | e/exit ]: r
 
 In the first question, you can select options to source directories. `r/recent` finds reacently modified files (within 1 hour). `a/all` finds all fish files in the config directory.
 
-In the second question, you can check the selected fish files with `p` or `print` without sourcing. To source files and check the results at the same time, type `r` or `result`. To go back to select config, type `b` or `back`. Typing `s` or `source` results in sourcing fish files in the selected directory without printing results.
+In the second question, you can check the selected fish files with `p` or `print` without sourcing. To source files and check the results at the same time, type `y` or `yes`. To source them without printing results, type `q` or `quiet`. To go back to select config, type `b` or `back`. Typing `s` or `source` results in sourcing fish files in the selected directory without printing results.
 
 ## Change Log 🔖
 
