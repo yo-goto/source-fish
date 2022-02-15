@@ -33,7 +33,7 @@ OPTIONS:
       -c, --config    Source fish files in the config directory
 ```
 
-If your current directory structure is like this, `source-fish` finds all fish files in `comptions`, `functions` and `conf.d` directories, and then source them at once. (This example is my [ggl.fish](https://github.com/yo-goto/ggl.fish) plugin)
+If your current directory structure is like this, `source-fish` finds all fish files in `comptions`, `functions` and `conf.d` directories, and then source them at once. (My [ggl.fish](https://github.com/yo-goto/ggl.fish) plugin directory structure ↓)
 
 ```console
 .
@@ -73,6 +73,27 @@ Source these fish files? [Y/n]: y
 -->complete: ./functions/ggl.fish
 -->complete: ./functions/fin.fish
 -->complete: ./conf.d/ggl.fish
+```
+
+From v0.2.0, you can use "permit" option with `-p` or `--permit` option flags. With this option, you can source fish files immediatly.
+
+```console
+# default source
+❯ source-fish -p
+-->completed: ./functions/source-fish.fish
+-->completed: ./completions/source-fish.fish
+# for test directory
+❯ source-fish -tp
+-->completed: ./test/mytest.fish
+-->completed: ./test/simple.fish
+-->completed: ./tests/bool.fish
+-->completed: ./tests/numtest.fish
+-->completed: ./tests/combi.fish
+-->completed: ./tests/sometest.fish
+# for recently modified files (within 1 hour)
+❯ source-fish -rp
+-->completed: ./tests/combi.fish
+-->completed: ./functions/source-fish.fish
 ```
 
 You can also source bulk fish files in the config direcotry (to check your config dir, use `echo $__fish_config_dir`). To do so, use `-c` or `--config` option flag. In this option mode, you can interactively select a directory to source.
