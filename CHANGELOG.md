@@ -1,3 +1,6 @@
+- v0.2.1
+    - Improvement
+        - modified question loop in config option mode
 - v0.2.0
     - New feature
         - added new option `p/permit` to source fish files in the current project without confirmation

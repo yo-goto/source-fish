@@ -8,7 +8,7 @@ function source-fish -d "Source fish files under the current directory"
         -- $argv
     or return 1
 
-    set --local version_source_fish "v0.2.0"
+    set --local version_source_fish "v0.2.1"
     # color shortcut
     set --local cc (set_color yellow)
     set --local cn (set_color normal)
@@ -184,12 +184,20 @@ function __source-fish_config
                 case O o open
                     set --local filer_flag "false"
                     if type -q code
-                        read -l -P "Open direcotry in VsCode or Finder? [v:vscode | f:filer]: " input
-                        switch "$input"
-                            case V v vscode
-                                command code $__fish_config_dir
-                            case F f finder
-                                set filer_flag "true"
+                        while true
+                            read -l -P "Open direcotry in VsCode or Finder? [v:vscode | f:filer | b:back | e:exit]: " input
+                            switch "$input"
+                                case V v vscode
+                                    command code $__fish_config_dir
+                                    break
+                                case F f finder
+                                    set filer_flag "true"
+                                    break
+                                case B b back
+                                    break
+                                case E e q exit
+                                    return
+                            end
                         end
                     end
 
