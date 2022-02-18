@@ -8,7 +8,7 @@ function source-fish -d "Source fish files under the current directory"
         -- $argv
     or return 1
 
-    set --local version_source_fish "v0.2.1"
+    set --local version_source_fish "v0.2.2"
     # color shortcut
     set --local cc (set_color yellow)
     set --local cn (set_color normal)
@@ -44,7 +44,7 @@ function source-fish -d "Source fish files under the current directory"
                     case Y y yes
                         __source-fish_times $list_specified_dir_files
                         return
-                    case N n q no
+                    case N n no
                         return
                 end
             end
@@ -68,7 +68,7 @@ function source-fish -d "Source fish files under the current directory"
                     case Y y yes
                         __source-fish_times $list_recent
                         return
-                    case N n q no
+                    case N n no
                         return
                 end
             end
@@ -93,7 +93,7 @@ function source-fish -d "Source fish files under the current directory"
                     case Y y yes
                         __source-fish_times $list_all_fish_files
                         return
-                    case N n q no
+                    case N n no
                         return
                 end
             end
@@ -120,7 +120,7 @@ function source-fish -d "Source fish files under the current directory"
                     case Y y yes
                         __source-fish_times $list_test_dir
                         return
-                    case N n q no
+                    case N n no
                         return
                 end
             end

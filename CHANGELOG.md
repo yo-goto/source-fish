@@ -1,3 +1,6 @@
+- v0.2.2
+    - Improvement
+        - removed 'q' hidden choice to exit in the config option mode to avoid confusing with 'q:quiet' choice
 - v0.2.1
     - Improvement
         - modified question loop in config option mode
