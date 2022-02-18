@@ -31,6 +31,7 @@ function source-fish -d "Source fish files under the current directory"
         for i in (seq 1 (count $list_replaced))
             set -a list_specified_dir_files (command find . -depth $max_find_depth -type f -path "./$list_replaced[$i]/*.fish")
         end
+
         if not test -n "$list_specified_dir_files"
             echo "No files found"
             return 1
@@ -53,8 +54,8 @@ function source-fish -d "Source fish files under the current directory"
             return
         end
     else if set -q _flag_recent
-        set --local list_recent
-        set -a list_recent (command find . -type f -depth $max_find_depth -path "*.fish" -mmin "-60")
+        set --local list_recent (command find . -type f -depth $max_find_depth -path "*.fish" -mmin "-60")
+        
         if not test -n "$list_recent"
             echo "No files found"
             return 1
@@ -136,35 +137,30 @@ function source-fish -d "Source fish files under the current directory"
         return
     else
         ## no option flags & no arguments
-        set --local list_functions (command find . -type f -depth $max_find_depth -path "./functions/*.fish")
-        set --local list_completions (command find . -type f -depth $max_find_depth -path "./completions/*.fish")
-        set --local list_conf (command find . -type f -depth $max_find_depth -path "./conf.d/*.fish")
-
-        if not test \( -n "$list_functions" \) -o \( -n "$list_completions" \) -o \( -n "$list_conf" \)
+        set --local list_bundled
+        set -a list_bundled (command find . -type f -depth $max_find_depth -path "./functions/*.fish")
+        set -a list_bundled (command find . -type f -depth $max_find_depth -path "./completions/*.fish")
+        set -a list_bundled (command find . -type f -depth $max_find_depth -path "./conf.d/*.fish")
+        
+        if not test -n "$list_bundled"
             echo "No files found"
             return 1
-        end
-
-        if not set -q _flag_permit
+        else if not set -q _flag_permit
             ## normal process
             echo "Current:"$cc $PWD $cn
             while true
                 read -l -P "Source fish files in this project? [Y/n]: " question
                 switch "$question"
                     case Y y yes
-                        test -n "$list_functions"; and __source-fish_times $list_functions
-                        test -n "$list_completions"; and __source-fish_times $list_completions
-                        test -n "$list_conf"; and __source-fish_times $list_conf
+                        __source-fish_times $list_bundled
                         return
                     case N q n no
                         return
                 end
             end
         else
-            ## with permission
-            test -n "$list_functions"; and __source-fish_times $list_functions
-            test -n "$list_completions"; and __source-fish_times $list_completions
-            test -n "$list_conf"; and __source-fish_times $list_conf
+            __source-fish_times $list_bundled
+            return
         end
     end
 end
