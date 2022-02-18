@@ -8,7 +8,7 @@ function source-fish -d "Source fish files under the current directory"
         -- $argv
     or return 1
 
-    set --local version_source_fish "v0.2.2"
+    set --local version_source_fish "v0.3.0"
     # color shortcut
     set --local cc (set_color yellow)
     set --local cn (set_color normal)
@@ -16,6 +16,10 @@ function source-fish -d "Source fish files under the current directory"
 
     set --local directory $argv # input arguments
     set --local max_find_depth "-3" # find depth
+    set --local list_source_files
+    # comment or question word
+    set --local comment_found "found fish files:"
+    set --local question_source
 
     if set -q _flag_version
         echo "source-fish:" $version_source_fish
@@ -23,145 +27,60 @@ function source-fish -d "Source fish files under the current directory"
     else if set -q _flag_help
         __source-fish_help
         return
-    else if test -n "$directory"
-        ## if arguments aer specified, find fish files in the directories
-        ### trim last slash character
-        set --local list_replaced (string replace --all -r "/\$" "" $directory)
-        set --local list_specified_dir_files
-        for i in (seq 1 (count $list_replaced))
-            set -a list_specified_dir_files (command find . -depth $max_find_depth -type f -path "./$list_replaced[$i]/*.fish")
-        end
-
-        if not test -n "$list_specified_dir_files"
-            echo "No files found"
-            return 1
-        end
-
-        if not set -q _flag_permit
-            printf '%s\n' "found fish files:"$cc $list_specified_dir_files; set_color normal
-            while true
-                read -l -P "Source these fish files? [Y/n]: " question
-                switch "$question"
-                    case Y y yes
-                        __source-fish_times $list_specified_dir_files
-                        return
-                    case N n no
-                        return
-                end
-            end
-        else
-            __source-fish_times $list_specified_dir_files
-            return
-        end
-    else if set -q _flag_recent
-        set --local list_recent (command find . -type f -depth $max_find_depth -path "*.fish" -mmin "-60")
-        
-        if not test -n "$list_recent"
-            echo "No files found"
-            return 1
-        end
-
-        if not set -q _flag_permit
-            echo "Current:"$cc $PWD $cn
-            printf '%s\n' "found fish files modified in the last hour:"$cc "  "$list_recent; set_color normal
-            while true
-                read -l -P "Source these fish files? [Y/n]: " question
-                switch "$question"
-                    case Y y yes
-                        __source-fish_times $list_recent
-                        return
-                    case N n no
-                        return
-                end
-            end
-        else
-            __source-fish_times $list_recent
-            return
-        end
-    else if set -q _flag_all
-        ## find all fish files and try to soruce interactively (find max depth -3)
-        set --local display_depth_num (string trim -lc "-" -- $max_find_depth)
-        set --local list_all_fish_files (command find . -depth $max_find_depth -type f -name "*.fish")
-        if not test -n "$list_all_fish_files"
-            echo "No files found"
-            return 1
-        end
-
-        if not set -q _flag_permit
-            echo "Current:"$cc $PWD $cn
-            printf '%s\n' "found fish files:"$cc "  "$list_all_fish_files; set_color normal
-            while true
-                read -l -P 'Source all these fish files? [Y/n]: ' second
-                switch "$second"
-                    case Y y yes
-                        __source-fish_times $list_all_fish_files
-                        return
-                    case N n no
-                        return
-                end
-            end
-        else
-            __source-fish_times $list_all_fish_files
-            return
-        end
-    else if set -q _flag_test
-        ## find "test" directory, and source fish files in the directory
-        set --local list_test_dir
-        set -a list_test_dir (command find . -type f -depth $max_find_depth -path "./test/*.fish")
-        set -a list_test_dir (command find . -type f -depth $max_find_depth -path "./tests/*.fish")
-        # set -a list_test_dir (command find . -type f -depth $max_find_depth -name "*test.fish")
-        if not test -n "$list_test_dir"
-            echo "No files found"
-            return 1
-        end
-
-        if not set -q _flag_permit
-            echo "Current:"$cc $PWD $cn
-            printf '%s\n' "found test files:"$cc "  "$list_test_dir; set_color normal
-            while true
-                read -l -P "Source test fish files in this project? [Y/n]: " question
-                switch "$question"
-                    case Y y yes
-                        __source-fish_times $list_test_dir
-                        return
-                    case N n no
-                        return
-                end
-            end
-        else
-            __source-fish_times $list_test_dir
-            return
-        end
     else if set -q _flag_config
         __source-fish_config
         return
+    else if test -n "$directory"
+        ## if arguments are specified, find fish files in the specified directories
+        ### trim last slash character
+        set --local list_replaced (string replace --all -r "/\$" "" $directory)
+        for i in (seq 1 (count $list_replaced))
+            set -a list_source_files (command find . -depth $max_find_depth -type f -path "./$list_replaced[$i]/*.fish")
+        end
+        set question_source "Source these fish files? [Y/n]: "
+    else if set -q _flag_recent
+        set -a list_source_files (command find . -type f -depth $max_find_depth -path "*.fish" -mmin "-60")
+        set comment_found "found fish files modified in the last hour:"
+        set question_source "Source these fish files? [Y/n]: "
+    else if set -q _flag_all
+        ## find all fish files and try to soruce interactively (find max depth -3)
+        set --local display_depth_num (string trim -lc "-" -- $max_find_depth)
+        set -a list_source_files (command find . -depth $max_find_depth -type f -name "*.fish")
+        set question_source "Source all fish files? [Y/n]: "
+    else if set -q _flag_test
+        ## find "test" directory, and source fish files in the directory
+        set -a list_source_files (command find . -type f -depth $max_find_depth -path "./test/*.fish")
+        set -a list_source_files (command find . -type f -depth $max_find_depth -path "./tests/*.fish")
+        # set -a list_source_files (command find . -type f -depth $max_find_depth -name "*test.fish")
+        set comment_found "found test files:"
+        set question_source "Source test fish files in this project? [Y/n]: "
     else
         ## no option flags & no arguments
-        set --local list_bundled
-        set -a list_bundled (command find . -type f -depth $max_find_depth -path "./functions/*.fish")
-        set -a list_bundled (command find . -type f -depth $max_find_depth -path "./completions/*.fish")
-        set -a list_bundled (command find . -type f -depth $max_find_depth -path "./conf.d/*.fish")
-        
-        if not test -n "$list_bundled"
-            echo "No files found"
-            return 1
-        else if not set -q _flag_permit
-            ## normal process
-            echo "Current:"$cc $PWD $cn
-            while true
-                read -l -P "Source fish files in this project? [Y/n]: " question
-                switch "$question"
-                    case Y y yes
-                        __source-fish_times $list_bundled
-                        return
-                    case N q n no
-                        return
-                end
+        set -a list_source_files (command find . -type f -depth $max_find_depth -path "./functions/*.fish")
+        set -a list_source_files (command find . -type f -depth $max_find_depth -path "./completions/*.fish")
+        set -a list_source_files (command find . -type f -depth $max_find_depth -path "./conf.d/*.fish")
+        set question_source "Source fish files in this project? [Y/n]: "
+    end
+
+    # common process
+    if not test -n "$list_source_files"
+        echo "No files found"
+        return 1
+    else if not set -q _flag_permit
+        printf '%s\n' "$comment_found"$cc "  "$list_source_files; set_color normal
+        while true
+            read -l -P "$question_source" question
+            switch "$question"
+                case Y y yes
+                    __source-fish_times $list_source_files
+                    return
+                case N q n no
+                    return
             end
-        else
-            __source-fish_times $list_bundled
-            return
         end
+    else
+        # with permission flag
+        __source-fish_times $list_source_files
     end
 end
 
