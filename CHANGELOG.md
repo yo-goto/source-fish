@@ -2,8 +2,8 @@
     - Improvement
         - removed 'q' hidden choice to exit in the config option mode to avoid confusing with 'q:quiet' choice
     - Refactor
-        - added explict returns to be more understandable code exits
-        - simplified the way to setupt a list to source files in no argument handling
+        - added explicit returns to be more understandable code exits
+        - simplified the way to setup a list to source files in no argument handling
         - unified optional processes into a single common process
 - v0.2.1
     - Improvement
