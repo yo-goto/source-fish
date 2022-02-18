@@ -50,6 +50,7 @@ function source-fish -d "Source fish files under the current directory"
             end
         else
             __source-fish_times $list_specified_dir_files
+            return
         end
     else if set -q _flag_recent
         set --local list_recent
@@ -74,6 +75,7 @@ function source-fish -d "Source fish files under the current directory"
             end
         else
             __source-fish_times $list_recent
+            return
         end
     else if set -q _flag_all
         ## find all fish files and try to soruce interactively (find max depth -3)
@@ -99,6 +101,7 @@ function source-fish -d "Source fish files under the current directory"
             end
         else
             __source-fish_times $list_all_fish_files
+            return
         end
     else if set -q _flag_test
         ## find "test" directory, and source fish files in the directory
@@ -126,9 +129,11 @@ function source-fish -d "Source fish files under the current directory"
             end
         else
             __source-fish_times $list_test_dir
+            return
         end
     else if set -q _flag_config
         __source-fish_config
+        return
     else
         ## no option flags & no arguments
         set --local list_functions (command find . -type f -depth $max_find_depth -path "./functions/*.fish")
